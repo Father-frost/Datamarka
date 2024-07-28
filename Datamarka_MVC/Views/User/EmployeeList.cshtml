@@ -1,0 +1,64 @@
+﻿@using Datamarka_BLL.Contracts.Identity
+@using Datamarka_DomainModel.Models.Identity
+@using Datamarka_MVC.Controllers.Identity
+@model List<UserBriefModel>?
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee List</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Users List</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Email / Login</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model ?? new List<UserBriefModel>())
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.Role</td>
+                        <td>
+                            <a href="@Url.Action(nameof(UserController.Edit), new {id = user.Id})">Edit</a> |
+                            <a href="@Url.Action(nameof(UserController.Delete), new {id = user.Id})">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        @if (ViewBag.Page > 0)
+        {
+            <a href="@Url.Action("EmployeeList", new { page = ViewBag.Page - 1 })"
+               class="btn btn-primary m-2">
+                &laquo; Prev
+            </a>
+        }
+        @if (ViewBag.Page < ViewBag.MaxPage)
+        {
+            <a href="@Url.Action("EmployeeList", new { page = ViewBag.Page + 1 })"
+               class="btn btn-primary m-2">
+                Next &raquo;
+            </a>
+        }
+
+        <div style="display:block">
+            <a href="@Url.Action(nameof(UserController.Create))" class="btn btn-success m-2"> Add new employee </a>
+        </div>
+    </div>
+</body>
+</html>

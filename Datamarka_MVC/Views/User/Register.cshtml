@@ -1,0 +1,56 @@
+﻿@using Datamarka_BLL.Contracts.Identity
+@using Datamarka_DomainModel.Models.Identity
+@using Datamarka_MVC.Controllers.Identity
+@using System.Linq
+@using Datamarka_MVC.DataTransferObjects.Identity
+@model UserBriefDTO;
+
+<h2>Customer Registration</h2>
+
+<!--Form for adding customer-->
+@using (Html.BeginForm(
+			actionName: nameof(UserController.Register),
+			controllerName: "User",
+			FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<!-- customer's first name -->
+	<div class="row">
+		<div class="col">
+			@Html.LabelFor(model => model.FirstName, new { @class = "form-label m-2" })
+			@Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+		</div>
+
+		<!-- customer's last name -->
+		<div class="col">
+			@Html.LabelFor(model => model.LastName, new { @class = "form-label m-2" })
+			@Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	//customer Email
+	<div class="form-group">
+		@Html.LabelFor(model => model.Email, new { @class = "form-label m-2" })
+		@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Password, new { @class = "form-label m-2" })
+		@Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+	</div>
+
+	<div class="form-group">
+		<p class="form-label m-2">We will send you a message to email to confirm your account.</p>
+	</div>
+
+	//submit button
+	<div class="form-group">
+		<input type="submit" value="Register" class="btn btn-success m-2" />
+	</div>
+
+}

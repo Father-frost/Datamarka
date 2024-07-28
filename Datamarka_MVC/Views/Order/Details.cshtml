@@ -1,0 +1,17 @@
+﻿@using Datamarka_DomainModel.Models.Identity
+@using Datamarka_MVC.Controllers
+
+<div class="card" style="width: 50rem;">
+	<div class="card-body">
+		<h4 class="card-title"><u>Order Details</u></h4>
+		<p class="card-text">@nameof(Model.Id) : @Model.Id</p>
+		<p class="card-text">@nameof(Model.OrderText) : @Model.OrderText</p>
+		<p class="card-text">@nameof(Model.Date) : @Model.Date</p>
+		<p class="card-text">@nameof(Model.Status) : @Model.Status</p>
+		<p class="card-text">@nameof(Model.Address) : @Model.Address</p>
+		<p class="card-text">@nameof(Model.Phone) : @Model.Phone</p>
+		<p class="card-text">@nameof(Model.MinCost) : @Model.MinCost</p>
+		<p class="card-text">@nameof(Model.MaxCost) : @Model.MaxCost</p>
+		<a href="@Url.Action(nameof(EmployeeController.Index))" class="card-link">Back to list</a>
+	</div>
+</div>

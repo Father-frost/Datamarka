@@ -1,0 +1,43 @@
+﻿@using Datamarka_BLL.Contracts
+@using Datamarka_MVC.Controllers
+@using Datamarka_DomainModel.Models
+@model List<OrderBriefModel>?
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Product</th>
+			<th scope="col">ProdDate</th>
+			<th scope="col">WarrantDate</th>
+			<th scope="col">Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var order in Model ?? new List<OrderBriefModel>())
+		{
+			<tr>
+				<td>@order.Product.Name</td>
+				<td>@order.ProdDate</td>
+				<td>@order.WarrantDate</td>
+				<td>@order.Status</td>
+				<td>
+					<a href="@Url.Action(nameof(OrderController.Edit), new {id = order.Id})">Change Status</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@if (ViewBag.Page > 0)
+{
+	<a href="@Url.Action("ListForEmployee", new { page = ViewBag.Page - 1 })"
+	   class="btn btn-primary m-2">
+		&laquo; Prev
+	</a>
+}
+@if (ViewBag.Page < ViewBag.MaxPage)
+{
+	<a href="@Url.Action("ListForEmployee", new { page = ViewBag.Page + 1 })"
+	   class="btn btn-primary m-2">
+		Next &raquo;
+	</a>
+}

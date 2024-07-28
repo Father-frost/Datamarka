@@ -1,0 +1,44 @@
+﻿@using Datamarka_BLL.Contracts
+@using Datamarka_DomainModel.Models.ECommerce
+@using Datamarka_DomainModel.Models.Identity
+@using Datamarka_MVC.Controllers
+@using System.Linq
+@model Order;
+
+<h2>Edit Order</h2>
+
+@using (Html.BeginForm(
+					actionName: nameof(OrderController.Edit),
+					controllerName: Html.ViewContext.RouteData.Values["controller"].ToString(),
+					FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	@Html.HiddenFor(model => model.User.Id)
+	<div class="form-group">
+		@Html.LabelFor(model => model.ProdDate, new { @class = "form-label m-2" })
+		@Html.TextAreaFor(model => model.ProdDate, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.ProdDate, "", new { @class = "text-danger" })
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.WarrantDate, new { @class = "form-label m-2" })
+		@Html.TextBoxFor(model => model.WarrantDate, new { @class = "form-control", @readonly = true })
+		@Html.ValidationMessageFor(model => model.WarrantDate, "", new { @class = "text-danger" })
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.Status, new { @class = "form-label m-2" })
+		@Html.DropDownListFor(model => model.Status,
+				Html.GetEnumSelectList<OrderStatusEnum>(),
+				null,
+				new { @class = "form-select" })
+	</div>
+	//submit button
+	<div class="form-group">
+		<input type="submit" value="Edit" class="btn btn-success m-2" />
+	</div>
+	<div class="form-group">
+		<a href="@Url.Action(nameof(OrderController.List))" class="card-link">Back to list</a>
+	</div>
+
+}

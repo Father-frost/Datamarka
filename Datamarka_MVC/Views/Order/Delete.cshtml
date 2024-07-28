@@ -1,0 +1,30 @@
+﻿@using Datamarka_MVC.Controllers
+@using Datamarka_MVC.Enums
+@using System.Linq
+
+@using (Html.BeginForm(
+							actionName: nameof(OrderController.Delete),
+							controllerName: Html.ViewContext.RouteData.Values["controller"].ToString(),
+							FormMethod.Post))
+{
+
+	<div class="card" style="width: 50rem;">
+		<div class="card-body">
+			<h4 class="card-title">Are you sure you want to delete this?</h4>
+			<h5 class="card-subtitle"><u>Order Details</u></h5>
+			<p class="card-text">@nameof(Model.OrderText) : @Model.OrderText</p>
+			<p class="card-text">@nameof(Model.Date) : @Model.Date</p>
+			<p class="card-text">@nameof(Model.Status) : @Model.Status</p>
+			<p class="card-text">@nameof(Model.Address) : @Model.Address</p>
+			<p class="card-text">@nameof(Model.Phone) : @Model.Phone</p>
+			<p class="card-text">@nameof(Model.MinCost) : @Model.MinCost</p>
+			<p class="card-text">@nameof(Model.MaxCost) : @Model.MaxCost</p>
+			<a href="@Url.Action(nameof(OrderController.List))" class="card-link">Back to list</a>
+			<!--submit button-->
+			<div>
+				<input type="submit" value="Delete" class="btn btn-success m-2" />
+			</div>
+		</div>
+	</div>
+
+}

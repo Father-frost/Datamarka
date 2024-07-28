@@ -1,0 +1,1 @@
+dotnet ef migrations add -p Datamarka_DAL -s Datamarka_MVC AddProduct_Order_CodesByOrder_User

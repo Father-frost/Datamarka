@@ -1,0 +1,40 @@
+﻿@using Datamarka_BLL.Contracts
+@using Datamarka_DomainModel.Models
+@using Datamarka_MVC.Controllers
+@using Datamarka_MVC.Enums
+@using System.Linq
+@model OrderBriefModel;
+
+<h2>Create Order</h2>
+
+@using (Html.BeginForm(
+			actionName: nameof(OrderController.Create),
+			controllerName: Html.ViewContext.RouteData.Values["controller"].ToString(),
+			FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.Product.Name, new { @class = "form-label m-2" })
+		@Html.TextAreaFor(model => model.Product.Name, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Product.Name, "", new { @class = "text-danger" })
+	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.ProdDate, new { @class = "form-label m-2" })
+		@Html.TextAreaFor(model => model.ProdDate, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.ProdDate, "", new { @class = "text-danger" })
+	</div>
+	
+	<div class="form-group">
+		@Html.LabelFor(model => model.WarrantDate, new { @class = "form-label m-2" })
+		@Html.TextBoxFor(model => model.WarrantDate, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.WarrantDate, "", new { @class = "text-danger" })
+	</div>
+
+	//submit button
+	<div class="form-group">
+		<input type="submit" value="Create" class="btn btn-success m-2" />
+	</div>
+
+}

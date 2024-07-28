@@ -1,0 +1,15 @@
+﻿@using Datamarka_MVC.Controllers
+@using Datamarka_MVC.Controllers.Identity
+@using System.Security.Claims
+@{
+    //ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Help Desk portal!</h1>
+
+        <p>Please, <a asp-controller="Login" asp-action="Index">Sign in</a> or <a asp-controller="User" asp-action="Register">Register</a> to leave an Order.<p>
+    <a href="@Url.Action(nameof(HomeController.Index), "Home")"><p>About Us<p></a>
+
+
+</div>
