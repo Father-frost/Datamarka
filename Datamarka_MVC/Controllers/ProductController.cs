@@ -1,36 +1,36 @@
-﻿using Datamarka_BLL.Contracts.Identity;
-using Datamarka_DomainModel.Models.Identity;
+﻿using Datamarka_BLL.Contracts;
+using Datamarka_DomainModel.Models.ECommerce;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Datamarka_MVC.Controllers
 {
-	public class EmployeeController : Controller
+	public class ProductController : Controller
 	{
-		private readonly IEmployeeService _employeeService;
-		public EmployeeController(IEmployeeService employeeService)
+		private readonly IProductService _productService;
+		public ProductController(IProductService productService)
 		{
-			_employeeService = employeeService;
+			_productService = productService;
 		}
 
-		// GET: EmployeeController
+		// GET: ProductController
 		public ActionResult Index()
 		{
-			//return View(Employees);
-			return View(_employeeService.GetEmployees());
+			//return View(Products);
+			return View(_productService.GetProducts());
 		}
 
-		// GET: EmployeeController/Create
+		// GET: ProductController/Create
 		public ActionResult Create()
 		{
 			return View();
 		}
 
-		// POST: EmployeeController/Create
-		//Adding an Employee to List
+		// POST: ProductController/Create
+		//Adding an Product to List
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(Employee employee)
+		public ActionResult Create(Product product)
 		{
 			try
 			{
@@ -39,7 +39,7 @@ namespace Datamarka_MVC.Controllers
 				{
 					return View();
 				}
-				_employeeService.CreateEmployee(employee);
+				_productService.CreateProduct(product);
 				return RedirectToAction(nameof(Index));
 			}
 			catch
@@ -49,7 +49,7 @@ namespace Datamarka_MVC.Controllers
 		}
 
 
-		// GET: EmployeeController/Details/5
+		// GET: ProductController/Details/5
 		public ActionResult Details(long? id)
 		{
 			if (!id.HasValue)
@@ -59,8 +59,8 @@ namespace Datamarka_MVC.Controllers
 
 			try
 			{
-				var employee = _employeeService.GetEmployeeById(id.Value);
-				return View(employee);
+				var product = _productService.GetProductById(id.Value);
+				return View(product);
 			}
 			catch
 			{
@@ -83,8 +83,8 @@ namespace Datamarka_MVC.Controllers
 				{
 					return View();
 				}
-				var editedEmployee = _employeeService.GetEmployeeById(id.Value);
-				return View(editedEmployee);
+				var editedProduct = _productService.GetProductById(id.Value);
+				return View(editedProduct);
 			}
 			catch
 			{
@@ -92,10 +92,10 @@ namespace Datamarka_MVC.Controllers
 			}
 		}
 
-		// POST: EmployeeController/Edit/5
+		// POST: ProductController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(Employee employee)
+		public ActionResult Edit(Product product)
 		{
 			try
 			{
@@ -104,7 +104,7 @@ namespace Datamarka_MVC.Controllers
 				{
 					return View();
 				}
-				_employeeService.WriteEmployee(employee);
+				_productService.WriteProduct(product);
 				return RedirectToAction(nameof(Index));
 			}
 			catch
@@ -113,7 +113,7 @@ namespace Datamarka_MVC.Controllers
 			}
 		}
 
-		// GET: EmployeeController/Delete/5
+		// GET: ProductController/Delete/5
 		[HttpGet]
 		public ActionResult Delete(long? id)
 		{
@@ -123,9 +123,9 @@ namespace Datamarka_MVC.Controllers
 			}
 			try
 			{
-				var deletedEmployee = _employeeService.GetEmployeeById(id.Value);
+				var deletedProduct = _productService.GetProductById(id.Value);
 
-				return View(deletedEmployee);
+				return View(deletedProduct);
 			}
 			catch
 			{
@@ -133,14 +133,14 @@ namespace Datamarka_MVC.Controllers
 			}
 		}
 
-		// POST: EmployeeController/Delete/5
+		// POST: ProductController/Delete/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(long id)
 		{
 			try
 			{
-				_employeeService.DeleteEmployee(id);
+				_productService.DeleteProduct(id);
 				return RedirectToAction(nameof(Index));
 			}
 			catch
