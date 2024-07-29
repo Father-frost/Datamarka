@@ -28,10 +28,13 @@ namespace Datamarka_BLL.Services
 			var projectedQuery = from product in query
 								 select new Product
 								 {
-									 User = product.User,
 									 Id = product.Id,
-									 Post = product.Post,
-									 Skills = product.Skills,
+									 GTIN = product.GTIN,
+									 Name = product.Name,
+									 KPR = product.KPR,
+									 BestBeforedays = product.BestBeforedays,
+									 CountInPack = product.CountInPack,
+									 CountInPallet = product.CountInPallet,
 								 };
 
 			return projectedQuery.ToList();
@@ -53,9 +56,12 @@ namespace Datamarka_BLL.Services
 
 			var newDbProduct = new Product
 			{
-				User = product.User,
-				Post = product.Post,
-				Skills = product.Skills,
+				GTIN = product.GTIN,
+				Name = product.Name,
+				KPR = product.KPR,
+				BestBeforedays = product.BestBeforedays,
+				CountInPack = product.CountInPack,
+				CountInPallet = product.CountInPallet,
 			};
 
 			Product trackedProduct = repo.Create(newDbProduct);
@@ -65,7 +71,7 @@ namespace Datamarka_BLL.Services
 			return trackedProduct;
 		}
 
-		public async Task WriteEmployee(Product productToWrite)
+		public async Task WriteProduct(Product productToWrite)
 		{
 			var repo = _unitOfWork.GetRepository<Product>();
 
