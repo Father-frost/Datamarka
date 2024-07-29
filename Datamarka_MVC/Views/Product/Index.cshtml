@@ -1,0 +1,37 @@
+﻿@using Datamarka_MVC.Controllers
+@using Datamarka_DomainModel.Models.ECommerce
+
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">GTIN</th>
+			<th scope="col">Наименование</th>
+			<th scope="col">KPR</th>
+			<th scope="col">Годен,суток</th>
+			<th scope="col">Кол-во в ящике</th>
+			<th scope="col">Кол-во в паллете</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var m in Model)
+		{
+			<tr>
+				<td>@m.Id</td>
+				<td>@m.GTIN</td>
+				<td>@m.Name</td>
+				<td>@m.KPR</td>
+				<td>@m.BestBeforedays</td>
+				<td>@m.CountInPack</td>
+				<td>@m.CountInPallet</td>
+				<td><a href="@Url.Action(nameof(ProductController.Details), new {id = m.Id})">@nameof(ProductController.Details)</a></td>
+				<td><a href="@Url.Action(nameof(ProductController.Edit), new {id = m.Id})">@nameof(ProductController.Edit)</a></td>
+				<td><a href="@Url.Action(nameof(ProductController.Delete), new {id = m.Id})">@nameof(ProductController.Delete)</a></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div style="display:block">
+	<a href="@Url.Action(nameof(ProductController.Create))">Добавить продукт</a>
+</div>

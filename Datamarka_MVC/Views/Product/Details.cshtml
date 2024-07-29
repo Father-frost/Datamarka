@@ -1,0 +1,16 @@
+﻿@using Datamarka_DomainModel.Models.ECommerce
+@using Datamarka_MVC.Controllers
+
+<div class="card" style="width: 50rem;">
+	<div class="card-body">
+		<h4 class="card-title"><u>Product's Details</u></h4>
+		<p class="card-text">@nameof(Model.Id) : @Model.Id</p>
+		<p class="card-text">@nameof(Model.GTIN) : @Model.GTIN</p>
+		<p class="card-text">@nameof(Model.Name) : @Model.Name</p>
+		<p class="card-text">@nameof(Model.KPR) : @Model.KPR</p>
+		<p class="card-text">@nameof(Model.BestBeforeDays) : @Model.BestBeforeDays</p>
+		<p class="card-text">@nameof(Model.CountInPack) : @Model.CountInPack</p>
+		<p class="card-text">@nameof(Model.CountInPallet) : @Model.CountInPallet</p>
+		<a href="@Url.Action(nameof(ProductController.Index))" class="card-link">Back to list</a>
+	</div>
+</div>
