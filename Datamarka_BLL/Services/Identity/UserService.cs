@@ -69,7 +69,7 @@ namespace Datamarka_BLL.Services.Identity
 			_logger.Information("Start to create user!");
 
 			await _userStore.SetUserNameAsync(newUser, user.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(newUser, user.Email, CancellationToken.None);
+            //await _emailStore.SetEmailAsync(newUser, user.Email, CancellationToken.None);
 
             var result = await _userManager.CreateAsync(newUser, user.Password);
 			_logger.Information(result.ToString());
@@ -79,13 +79,13 @@ namespace Datamarka_BLL.Services.Identity
             {
                 _logger.Information("User created a new account with password.");
 
-                var userId = await _userManager.GetUserIdAsync(newUser);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = $@"https://localhost:7162/confirm?userId={userId}&code={code}";
+                //var userId = await _userManager.GetUserIdAsync(newUser);
+                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                //var callbackUrl = $@"https://localhost:7162/confirm?userId={userId}&code={code}";
 
-                var emailMessage = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
-                await _emailSender.SendEmailAsync(newUser.Email, "Confirm your email", emailMessage);
+                //var emailMessage = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+                //await _emailSender.SendEmailAsync(newUser.Email, "Confirm your email", emailMessage);
 				return newUser;
 
 			}
