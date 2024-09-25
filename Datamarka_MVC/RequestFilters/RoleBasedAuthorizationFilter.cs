@@ -28,9 +28,9 @@ namespace Datamarka_MVC.RequestFilters
                 context.Result = new UnauthorizedResult();
                 return;
             }
-
+            int.TryParse(userIdClaim.Value, out int userId);
             var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-            var actualRole = await userService.GetUserRole(userIdClaim.Value);
+            var actualRole = await userService.GetUserRole(userId);
 
             if (actualRole == null) {
                 context.Result = new UnauthorizedResult();
