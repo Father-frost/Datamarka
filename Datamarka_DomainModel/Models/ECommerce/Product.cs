@@ -9,6 +9,5 @@ namespace Datamarka_DomainModel.Models.ECommerce
         public required decimal BestBeforedays { get; set; }
         public required decimal CountInPack { get; set; }
         public required decimal CountInPallet { get; set; }
-
     }
 }

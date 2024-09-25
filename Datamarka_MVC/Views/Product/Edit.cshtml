@@ -3,7 +3,7 @@
 @using System.Linq
 @model Product;
 
-<h2>Edit Product</h2>
+<h2>Изменить продукт</h2>
 
 <!--Form for editing product-->
 @using (Html.BeginForm(
@@ -13,43 +13,49 @@
 {
 	@Html.AntiForgeryToken()
 	<div class="form-group">
-		@Html.LabelFor(m => m.Name, new { @class = "form-label m-2" })
+		@Html.LabelFor(m => m.Name, "Наименование*:", new { @class = "form-label m-2 fw-bold" })
 		@Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-		@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
 	</div>
 
 	<div class="form-group">
-		@Html.LabelFor(m => m.GTIN, new { @class = "form-label m-2" })
+		@Html.LabelFor(m => m.GTIN, "GTIN*:", new { @class = "form-label m-2 fw-bold" })
 		@Html.TextBoxFor(model => model.GTIN, new { @class = "form-control" })
-		@Html.ValidationMessageFor(m => m.GTIN, "", new { @class = "text-danger" })
 	</div>
 
 	<div class="form-group">
-		@Html.LabelFor(m => m.KPR, new { @class = "form-label m-2" })
+		@Html.LabelFor(m => m.KPR, "Внутренний код:", new { @class = "form-label m-2 fw-bold" })
 		@Html.TextBoxFor(model => model.KPR, new { @class = "form-control" })
-		@Html.ValidationMessageFor(m => m.KPR, "", new { @class = "text-danger" })
 	</div>
+
+	<div class="form-group">
+		@Html.LabelFor(m => m.BestBeforedays, "Годен, суток:", new { @class = "form-label m-2 fw-bold" })
+		@Html.TextBoxFor(model => model.BestBeforedays, new { @class = "form-control" })
+	</div>
+
+
 
 	<div class="row">
+
 		<div class="col">
-			@Html.LabelFor(m => m.CountInPack, new { @class = "form-label m-2" })
-			@Html.TextBoxFor(m => m.CountInPack, new { @class = "form-control" })
-			@Html.ValidationMessageFor(m => m.CountInPack, "", new { @class = "text-danger" })
+			@Html.LabelFor(model => model.CountInPack, "Кол-во в упаковке*:", new { @class = "form-label m-2 fw-bold" })
+			@Html.TextBoxFor(model => model.CountInPack, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.CountInPack, "", new { @class = "text-danger" })
 		</div>
 
 		<div class="col">
-			@Html.LabelFor(m => m.CountInPallet, new { @class = "form-label m-2" })
-			@Html.TextBoxFor(m => m.CountInPallet, new { @class = "form-control" })
-			@Html.ValidationMessageFor(m => m.CountInPallet, "", new { @class = "text-danger" })
+			@Html.LabelFor(model => model.CountInPallet, "Кол-во на паллете*:", new { @class = "form-label m-2 fw-bold" })
+			@Html.TextBoxFor(model => model.CountInPallet, new { @class = "form-control" })
+			@Html.ValidationMessageFor(model => model.CountInPallet, "", new { @class = "text-danger" })
 		</div>
+
 	</div>
 
 	//submit button
 	<div class="form-group">
-		<input type="submit" value="Edit" class="btn btn-success m-2" />
+		<input type="submit" value="Изменить" class="btn btn-success m-2" />
 	</div>
 	<div class="form-group">
-		<a href="@Url.Action(nameof(ProductController.Index))" class="card-link">Back to list</a>
+		<a href="@Url.Action(nameof(ProductController.Index))" class="card-link">Назад к списку</a>
 	</div>
 
 }
