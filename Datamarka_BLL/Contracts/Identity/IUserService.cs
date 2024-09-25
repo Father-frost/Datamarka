@@ -8,19 +8,21 @@ namespace Datamarka_BLL.Contracts.Identity
 
         Task<User> CreateUser(UserCreateModel user);
 
-        Task DeleteUser(User user);
+        Task DeleteUser(long userId);
 
         Task WriteUser(UserCreateModel user);
 
-        Task<User> GetUserById(string userId);
+        Task<User> GetUserById(long userId);
+
+        Task<User> GetUserByUserName(string login);
 
         Task<User> UpdateUserContactData(User user);
 
         
-        Task<User> SetUserRole(string userId, UserRoleEnum newRole);
+        Task<User> SetUserRole(long userId, UserRoleEnum newRole);
 
-        Task<UserRoleEnum?> GetUserRole(string userId);
+        Task<UserRoleEnum?> GetUserRole(long userId);
 
-        Task<User> UpdatePassword(string userId, string newPassword);
+        Task<User> UpdatePassword(long userId, string newPassword);
     }
 }

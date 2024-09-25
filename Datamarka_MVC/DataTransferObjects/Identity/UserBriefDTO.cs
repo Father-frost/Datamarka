@@ -7,22 +7,17 @@ namespace Datamarka_MVC.DataTransferObjects.Identity
     public class UserBriefDTO
     {
         [MaxLength(100)]
-        [MinLength(2, ErrorMessage = "The First Name is too short!")]
-        [Required(ErrorMessage = "First Name is required!")]
-        public required string FirstName { get; set; }
-
-        [MaxLength(100)]
-        [MinLength(2, ErrorMessage = "The Last Name is too short!")]
-        public string? LastName { get; set; }
-
-        [MaxLength(100)]
-        [Required(ErrorMessage = "Email is required!")]
-        public required string Email { get; set; }
+        [Required(ErrorMessage = "Не заполнено поле Логин!")]
+        public required string UserName { get; set; }
         
         public required UserRoleEnum Role { get; set; }
 
-        [MinLength(10, ErrorMessage = "The password is too short!")]
+        [MinLength(3, ErrorMessage = "Пароль слишком короткий!")]
         [MaxLength(50)]
         public required string Password { get; set; }
-    }
+
+		[MinLength(3, ErrorMessage = "Пароль слишком короткий!")]
+		[MaxLength(50)]
+		public required string ConfirmPassword { get; set; }
+	}
 }

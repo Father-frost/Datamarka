@@ -5,7 +5,7 @@
 @using Datamarka_MVC.DataTransferObjects.Identity
 @model UserBriefDTO;
 
-<h2>Create User</h2>
+<h2>Создание пользователя</h2>
 
 <!--Form for adding employee-->
 @using (Html.BeginForm(
@@ -15,32 +15,15 @@
 {
 	@Html.AntiForgeryToken()
 
-	<!-- Employee's first name -->
-	<div class="row">
-		<div class="col">
-			@Html.LabelFor(model => model.FirstName, new { @class = "form-label m-2" })
-			@Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
-			@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-		</div>
-
-		<!-- Employee's last name -->
-		<div class="col">
-			@Html.LabelFor(model => model.LastName, new { @class = "form-label m-2" })
-			@Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
-			@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	//User Email
 	<div class="form-group">
-		@Html.LabelFor(model => model.Email, new { @class = "form-label m-2" })
-		@Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-		@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+		@Html.LabelFor(model => model.UserName, new { @class = "form-label m-2 fw-bold" })
+		@Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
 	</div>
 
 	//User Role
 	<div class="form-group">
-		@Html.LabelFor(model => model.Role, new { @class = "form-label m-2" })
+		@Html.LabelFor(model => model.Role, new { @class = "form-label m-2 fw-bold" })
 		@Html.DropDownListFor(model => model.Role,
                 Html.GetEnumSelectList<UserRoleEnum>(),
 				null,
@@ -48,18 +31,20 @@
 	</div>
 
 	<div class="form-group">
-		@Html.LabelFor(model => model.Password, new { @class = "form-label m-2" })
+		@Html.LabelFor(model => model.Password, new { @class = "form-label m-2 fw-bold" })
 		@Html.PasswordFor(model => model.Password, new { @class = "form-control" })
 		@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
 	</div>
 
 	<div class="form-group">
-		<p class="form-label m-2">We will send you a message to email to confirm your account</p>
+		@Html.LabelFor(model => model.ConfirmPassword, new { @class = "form-label m-2 fw-bold" })
+		@Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
 	</div>
 
 	//submit button
 	<div class="form-group">
-		<input type="submit" value="Create" class="btn btn-success m-2" />
+		<input type="submit" value="Создать" class="btn btn-success m-2" />
 	</div>
 
 }

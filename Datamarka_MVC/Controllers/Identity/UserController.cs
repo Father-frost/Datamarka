@@ -1,12 +1,8 @@
 ﻿using Datamarka_BLL.Contracts.Identity;
+using Datamarka_DomainModel.Models.Identity;
 using Datamarka_MVC.DataTransferObjects.Identity;
 using Datamarka_MVC.RequestFilters;
-using Datamarka_DomainModel.Models.Identity;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Datamarka_BLL.Services.Identity;
-using Microsoft.AspNetCore.Identity;
-using System.Net;
 
 namespace Datamarka_MVC.Controllers.Identity
 {
@@ -35,7 +31,7 @@ namespace Datamarka_MVC.Controllers.Identity
         public async Task<IActionResult> EmployeeList(int page = 0)
         {
             const int PageSize = 3;
-            var allUsers = await _userService.FetchUsers(role:UserRoleEnum.Employee);
+            var allUsers = await _userService.FetchUsers(role: UserRoleEnum.Employee);
             var count = allUsers.Count;
             ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
 
@@ -53,26 +49,31 @@ namespace Datamarka_MVC.Controllers.Identity
         [RoleBasedAuthorizationFilter(Role = UserRoleEnum.Administrator)] // Micorosft Identity's attribute - uses Claims and dynamic Roles, too complicated for our usecase
         public async Task<IActionResult> Create(UserBriefDTO user)
         {
-
             var newUserModel = new UserCreateModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
+                UserName = user.UserName,
                 Role = user.Role,
-                Password = user.Password
+                Password = user.Password,
             };
+
 
             try
             {
-                if (!ModelState.IsValid)
+                if (user.Password == user.ConfirmPassword)
                 {
-                    return View();
+                    if (!ModelState.IsValid)
+                    {
+                        return View();
+                    }
+                    var newUser = await _userService.CreateUser(newUserModel);
+                    if (newUser == null)
+                    {
+                        return NotFound();
+                    }
                 }
-                var newUser = await _userService.CreateUser(newUserModel);
-                if (newUser == null)
+                else
                 {
-                    return NotFound();
+                    return NotFound("Пароль не совпадает с подтвеждением!");
                 }
                 return RedirectToAction(nameof(List));
             }
@@ -95,11 +96,9 @@ namespace Datamarka_MVC.Controllers.Identity
 
             var newUserModel = new UserCreateModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
+                UserName = user.UserName,
                 Role = UserRoleEnum.Customer,
-                Password = user.Password
+                Password = user.Password,
             };
 
             try
@@ -108,10 +107,19 @@ namespace Datamarka_MVC.Controllers.Identity
                 {
                     return View();
                 }
-                var newUser = await _userService.CreateUser(newUserModel);
-                if (newUser == null)
+                if (user.Password == user.ConfirmPassword)
                 {
-                    return NotFound("Possibly bad password or duplicated user!");
+                    var newUser = await _userService.CreateUser(newUserModel);
+
+
+                    if (newUser == null)
+                    {
+                        return NotFound("Possibly bad password or duplicated user!");
+                    }
+                }
+                else
+                {
+                    return NotFound("Пароль не совпадает с подтвеждением!");
                 }
                 return RedirectToAction("index", "home");
             }
@@ -144,7 +152,7 @@ namespace Datamarka_MVC.Controllers.Identity
 
         [HttpGet]
         [RoleBasedAuthorizationFilter(Role = UserRoleEnum.Administrator)]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(long id)
         {
             if (id == null)
             {
@@ -165,49 +173,50 @@ namespace Datamarka_MVC.Controllers.Identity
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [RoleBasedAuthorizationFilter(Role = UserRoleEnum.Administrator)]
-        public async Task<ActionResult> DeleteConfirmed(string? id)
+        public async Task<ActionResult> DeleteConfirmed(long id)
         {
-            if (id == null)
+            if (id > 0)
             {
-                return NotFound("Empty id supplied!");
-            }
-            try
-            {
-                var deletedUser = await _userService.GetUserById(id);
-                if (deletedUser != null)
+                try
                 {
 
-                    await _userService.DeleteUser(deletedUser);
+
+                    await _userService.DeleteUser(id);
                     return RedirectToAction(nameof(List));
+
                 }
-                else
+                catch
                 {
-                    return NotFound();
+                    return NotFound("No such record found!");
                 }
             }
-            catch
+            else
             {
-                return NotFound("No such record found!");
+                return NotFound("Empty id supplied!");
             }
         }
 
         [HttpGet]
         [RoleBasedAuthorizationFilter(Role = UserRoleEnum.Administrator)]
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(long id)
         {
-            if (id == null)
+            if (id > 0)
+            {
+                try
+                {
+                    var editedUser = await _userService.GetUserById(id);
+
+                    return View(editedUser);
+                }
+                catch
+                {
+                    return NotFound("No such record found!");
+                }
+            }
+            else
             {
                 return NotFound("Empty id supplied!");
-            }
-            try
-            {
-                var editedUser = await _userService.GetUserById(id);
 
-                return View(editedUser);
-            }
-            catch
-            {
-                return NotFound("No such record found!");
             }
         }
 
@@ -218,11 +227,9 @@ namespace Datamarka_MVC.Controllers.Identity
         {
             var updateUserModel = new UserCreateModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
+                UserName = user.UserName,
                 Role = user.Role,
-                Password = user.Password
+                Password = user.Password,
             };
             try
             {
@@ -231,6 +238,7 @@ namespace Datamarka_MVC.Controllers.Identity
                 {
                     return View();
                 }
+
                 await _userService.WriteUser(updateUserModel);
                 return RedirectToAction(nameof(Index));
             }

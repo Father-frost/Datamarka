@@ -3,7 +3,7 @@
     public class UserSettings : Entity<long>
     {
         public User? User { get; set; }
-        public string? UserId { get; set; }
+        public long? UserId { get; set; }
 
         public required string Address { get; set; }
         public required string Phone { get; set; }
