@@ -1,15 +1,14 @@
 ﻿using Datamarka_DomainModel.Models.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Datamarka_DAL
 {
-    public class DatamarkaDbContext : IdentityDbContext<User>
+    public class DatamarkaDbContext : DbContext
     {
         public DatamarkaDbContext(DbContextOptions<DatamarkaDbContext> options) : base(options)
         {
 
-        }
+		}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
