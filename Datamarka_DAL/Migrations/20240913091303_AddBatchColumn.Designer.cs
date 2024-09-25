@@ -3,6 +3,7 @@ using System;
 using Datamarka_DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Datamarka_DAL.Migrations
 {
     [DbContext(typeof(DatamarkaDbContext))]
-    partial class DatamarkaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240913091303_AddBatchColumn")]
+    partial class AddBatchColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

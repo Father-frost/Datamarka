@@ -3,6 +3,7 @@ using System;
 using Datamarka_DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,13 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Datamarka_DAL.Migrations
 {
     [DbContext(typeof(DatamarkaDbContext))]
-    partial class DatamarkaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815113031_AddProduct_Order_CodesByOrder_User")]
+    partial class AddProduct_Order_CodesByOrder_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -52,15 +55,15 @@ namespace Datamarka_DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Batch")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<decimal>("CodesCount")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("OrderCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("ProdDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -72,7 +75,7 @@ namespace Datamarka_DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("WarrantDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
