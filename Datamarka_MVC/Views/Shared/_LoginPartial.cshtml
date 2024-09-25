@@ -1,16 +1,13 @@
 ﻿@using Datamarka_DomainModel.Models.Identity
 @using Datamarka_MVC.DataTransferObjects.Identity
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+    @if (User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
         <form method="post" asp-controller="account" asp-action="logout">
             <button type="submit" style="width:auto"
                     class="nav-link btn btn-link py-0">
-                Logout @User.Identity.Name
+                Выход <b>@User.Identity.Name</b>
             </button>
         </form>
         </li>
@@ -18,11 +15,9 @@
     else
     {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Login" asp-action="Index">Login</a>
+            <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Регистрация</a>
     </li>
     }
 
 </ul>
+

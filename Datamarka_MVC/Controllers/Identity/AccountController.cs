@@ -1,68 +1,106 @@
 ﻿using Datamarka_BLL.Contracts.Identity;
 using Datamarka_DomainModel.Models.Identity;
-using Microsoft.AspNetCore.Identity;
+using Datamarka_MVC.DataTransferObjects.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Text;
+using System.Security.Claims;
 using ILogger = Serilog.ILogger;
 
 namespace Datamarka_MVC.Controllers.Identity
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
+        private readonly IUserService _userService;
+        public UserRoleEnum Role { get; set; }
 
         public AccountController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger logger
-            )
+            ILogger logger, IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
+            _userService = userService;
         }
 
-        const string FailureMessage = "Failed to confirm the user, wrong user id or code, please contact Your administrator";
+        public ActionResult Index()
+        {
+            //return View(Employees);
+            return View();
+        }
 
         [HttpGet]
-        [Route("confirm")]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public IActionResult Login()
         {
-            if (userId == null || code == null)
-            {
-                _logger.Information("userId and code are required fields");
-                return NotFound("userId and code are required fields");
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                _logger.Information(FailureMessage);
-                return NotFound(FailureMessage);
-            }
-
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-
-            if (result.Succeeded) {
-                _logger.Information("Successfull email confirmation for {userId}");
-                return View();
-            }
-            _logger.Information(FailureMessage);
-            return NotFound(FailureMessage);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginDTO model)
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            if (ModelState.IsValid)
+            {
+                User user = await _userService.GetUserByUserName(model.UserName);
+                if (user != null)
+                {
+                    await Authenticate(model.UserName); // аутентификация
+
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            return View(model);
         }
 
+        private async Task Authenticate(string userName)
+        {
+            var user = await _userService.GetUserByUserName(userName);
+            // создаем один claim
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
+                new Claim("ActualRole", user.Role.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(UserCreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _userService.GetUserByUserName(model.UserName);
+                if (user == null)
+                {
+                    // добавляем пользователя в бд
+                    await _userService.CreateUser(model);
+
+                    await Authenticate(model.UserName); // аутентификация
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Account");
+        }
 
     }
 }

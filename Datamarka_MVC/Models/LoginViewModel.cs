@@ -4,11 +4,10 @@ namespace Datamarka_MVC.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Please enter your email.")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
-        public string? Email { get; set; }
+        [Required(ErrorMessage = "Введите логин")]
+        public string? UserName { get; set; }
 
-        [Required(ErrorMessage = "Please enter your password.")]
+        [Required(ErrorMessage = "Введите пароль")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 
