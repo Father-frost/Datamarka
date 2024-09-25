@@ -5,7 +5,7 @@
 @using System.Linq
 @model Order;
 
-<h2>Edit Order</h2>
+<h2>Изменить задание</h2>
 
 @using (Html.BeginForm(
 					actionName: nameof(OrderController.Edit),
@@ -14,20 +14,37 @@
 {
 	@Html.AntiForgeryToken()
 
-	@Html.HiddenFor(model => model.User.Id)
+	@Html.HiddenFor(model => model.UserId)
+	@Html.HiddenFor(model => model.Id)
 	<div class="form-group">
-		@Html.LabelFor(model => model.ProdDate, new { @class = "form-label m-2" })
-		@Html.TextAreaFor(model => model.ProdDate, new { @class = "form-control" })
+
+		@Html.LabelFor(model => model.ProductId, "Выберите продукт:", new { @class = "form-label m-2 fw-bold" })
+		@Html.DropDownListFor(model => model.ProductId,
+				ViewBag.Products as SelectList,
+				null,
+				new { @class = "form-select" })
+
+	</div>
+	
+	<div class="form-group">
+		@Html.LabelFor(model => model.Batch, "Партия:", new { @class = "form-label m-2 fw-bold" })
+		@Html.TextBoxFor(model => model.Batch, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.Batch, "", new { @class = "text-danger" })
+	</div>
+	
+	<div class="form-group">
+		@Html.LabelFor(model => model.ProdDate, "Дата изготовления:", new { @class = "form-label m-2 fw-bold" })
+		@Html.TextBoxFor(model => model.ProdDate, new { @class = "form-control" })
 		@Html.ValidationMessageFor(model => model.ProdDate, "", new { @class = "text-danger" })
 	</div>
 
 	<div class="form-group">
-		@Html.LabelFor(model => model.WarrantDate, new { @class = "form-label m-2" })
-		@Html.TextBoxFor(model => model.WarrantDate, new { @class = "form-control", @readonly = true })
+		@Html.LabelFor(model => model.WarrantDate, "Годен до:", new { @class = "form-label m-2 fw-bold" })
+		@Html.TextBoxFor(model => model.WarrantDate, new { @class = "form-control"})
 		@Html.ValidationMessageFor(model => model.WarrantDate, "", new { @class = "text-danger" })
 	</div>
 	<div class="form-group">
-		@Html.LabelFor(model => model.Status, new { @class = "form-label m-2" })
+		@Html.LabelFor(model => model.Status, "Статус:", new { @class = "form-label m-2 fw-bold" })
 		@Html.DropDownListFor(model => model.Status,
 				Html.GetEnumSelectList<OrderStatusEnum>(),
 				null,
@@ -35,10 +52,10 @@
 	</div>
 	//submit button
 	<div class="form-group">
-		<input type="submit" value="Edit" class="btn btn-success m-2" />
+		<input type="submit" value="Изменить" class="btn btn-success m-2" />
 	</div>
 	<div class="form-group">
-		<a href="@Url.Action(nameof(OrderController.List))" class="card-link">Back to list</a>
+		<a href="@Url.Action(nameof(OrderController.List))" class="card-link">Назад к списку</a>
 	</div>
 
 }

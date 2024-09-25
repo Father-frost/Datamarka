@@ -5,13 +5,12 @@ namespace Datamarka_BLL.Contracts
 {
     public class OrderDTO
     {
-		[MaxLength(100)]
-		[MinLength(2, ErrorMessage = "The Order text is too short!")]
-		[Required(ErrorMessage = "Order Text is required!")]
 		public required long ProductId { get; set;}
-		[Required(ErrorMessage = "Address is required!")]
+		[Required(ErrorMessage = "Заполните дату изготовления!")]
 		public DateTime ProdDate { get; set; }
-		[Required(ErrorMessage = "Phone is required!")]
+		[Required(ErrorMessage = "Заполните дату окончания срока годности!")]
 		public DateTime WarrantDate { get; set; }
+		[Required(ErrorMessage = "Заполните партию!")]
+		public required string Batch { get; set; }
     }
 }

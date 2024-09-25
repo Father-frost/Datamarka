@@ -11,7 +11,7 @@ namespace Datamarka_BLL.Contracts
         public Task<Order> GetOrderById(long? orderId);
         public Task<Order> CreateOrder(OrderBriefModel order);
 
-        public Task WriteOrder(OrderBriefModel orderToWrite);
+        public Task WriteOrder(Order orderToWrite);
 
         public Task DeleteOrder(long orderId);
     }

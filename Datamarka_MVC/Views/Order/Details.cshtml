@@ -3,15 +3,14 @@
 
 <div class="card" style="width: 50rem;">
 	<div class="card-body">
-		<h4 class="card-title"><u>Order Details</u></h4>
-		<p class="card-text">@nameof(Model.Id) : @Model.Id</p>
-		<p class="card-text">@nameof(Model.OrderText) : @Model.OrderText</p>
-		<p class="card-text">@nameof(Model.Date) : @Model.Date</p>
-		<p class="card-text">@nameof(Model.Status) : @Model.Status</p>
-		<p class="card-text">@nameof(Model.Address) : @Model.Address</p>
-		<p class="card-text">@nameof(Model.Phone) : @Model.Phone</p>
-		<p class="card-text">@nameof(Model.MinCost) : @Model.MinCost</p>
-		<p class="card-text">@nameof(Model.MaxCost) : @Model.MaxCost</p>
-		<a href="@Url.Action(nameof(ProductController.Index))" class="card-link">Back to list</a>
+		<h4 class="card-title"><u>Детали задания</u></h4>
+		<p class="card-text">Id : @Model.Id</p>
+		<p class="card-text">Наименование продукта: @Model.Product.Name</p>
+		<p class="card-text">GTIN : @Model.Product.GTIN</p>
+		<p class="card-text">Партия : @Model.Batch</p>
+		<p class="card-text">Дата изготовления : @Model.ProdDate</p>
+		<p class="card-text">Дата годности : @Model.WarrantDate</p>
+		<p class="card-text">Статус : @Model.Status</p>
+		<a href="@Url.Action(nameof(ProductController.Index))" class="card-link">Назад к списку</a>
 	</div>
 </div>

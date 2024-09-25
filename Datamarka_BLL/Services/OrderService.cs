@@ -1,9 +1,7 @@
-﻿using EllipticCurve.Utils;
-using Datamarka_BLL.Contracts;
+﻿using Datamarka_BLL.Contracts;
 using Datamarka_BLL.Contracts.Identity;
 using Datamarka_DAL;
 using Datamarka_DomainModel.Models.ECommerce;
-using Datamarka_DomainModel.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -19,7 +17,6 @@ namespace Datamarka_BLL.Services.Identity
             IUserService userService)
         {
             _unitOfWork = unitOfWork;
-            _userService = userService;
         }
 
         public Task<List<OrderBriefModel>> FetchOrders(long skip, long take, string? searchString, OrderStatusEnum? status)
@@ -32,9 +29,9 @@ namespace Datamarka_BLL.Services.Identity
             if (!string.IsNullOrEmpty(searchString))
             {
                 query = from order in query
-                        where order.User.Id == searchString
+                        where order.UserId.ToString() == searchString
                         //|| order.EmployeeId == searchString
-						select order;
+                        select order;
             }
 
             if (status != null)
@@ -48,16 +45,18 @@ namespace Datamarka_BLL.Services.Identity
                                  select new OrderBriefModel
                                  {
                                      Id = order.Id,
-                                     User = order.User,
-                                     Product = order.Product,
+                                     UserId = order.UserId,
+                                     ProductId = order.ProductId,
+									 Product = order.Product,
+									 Batch = order.Batch,
                                      ProdDate = order.ProdDate,
                                      WarrantDate = order.WarrantDate,
                                      Status = order.Status,
                                  };
 
             return projectedQuery.Skip((int)skip).Take((int)take).ToListAsync();
-        }      
-        
+        }
+
         public Task<List<OrderBriefModel>> FetchOrdersForEmployee(long skip, long take, string? searchString, OrderStatusEnum? status)
         {
             var repo = _unitOfWork.GetRepository<Order>();
@@ -66,9 +65,9 @@ namespace Datamarka_BLL.Services.Identity
 
 
 
-                query = from order in query
-                        where order.Product.Id == 1
-						select order;
+            query = from order in query
+                    where order.ProductId == 1
+                    select order;
 
 
             if (status != null)
@@ -82,9 +81,11 @@ namespace Datamarka_BLL.Services.Identity
                                  select new OrderBriefModel
                                  {
                                      Id = order.Id,
-                                     User = order.User,
-                                     Product = order.Product,
-                                     ProdDate = order.ProdDate,
+                                     UserId = order.UserId,
+                                     Batch = order.Batch,
+                                     ProductId = order.ProductId,
+									 Product = order.Product,
+									 ProdDate = order.ProdDate,
                                      WarrantDate = order.WarrantDate,
                                      Status = order.Status,
                                  };
@@ -95,11 +96,14 @@ namespace Datamarka_BLL.Services.Identity
         public async Task<Order> GetOrderById(long? orderId)
         {
             var repo = _unitOfWork.GetRepository<Order>();
+            var repo2 = _unitOfWork.GetRepository<Product>();
 
-            var order = repo.AsReadOnlyQueryable()
-                .FirstOrDefault(ord => ord.Id == orderId);
+            var order = await repo.AsReadOnlyQueryable()
+                .FirstOrDefaultAsync(ord => ord.Id == orderId);
+            order.Product = await repo2.AsReadOnlyQueryable()
+                .FirstOrDefaultAsync(prod => prod.Id == order.ProductId);
 
-            return order;
+			return order;
         }
 
         public async Task<Order> CreateOrder(OrderBriefModel order)
@@ -110,9 +114,9 @@ namespace Datamarka_BLL.Services.Identity
 
             var newDbOrder = new Order
             {
-                User = order.User,
-                OrderCode = order.OrderCode,
-                Product = order.Product,
+                UserId = order.UserId,
+                Batch = order.Batch,
+				ProductId = order.ProductId,
                 ProdDate = order.ProdDate,
                 WarrantDate = order.WarrantDate,
                 Status = order.Status,
@@ -125,26 +129,14 @@ namespace Datamarka_BLL.Services.Identity
             return trackedOrder;
         }
 
-        public async Task WriteOrder(OrderBriefModel orderToWrite)
+        public async Task WriteOrder(Order orderToWrite)
         {
             var repo = _unitOfWork.GetRepository<Order>();
 
-            var user = await _userService.GetUserById(orderToWrite.UserId);
-
-			var newOrder = new Order
-			{
-                User = orderToWrite.User,
-                OrderCode = orderToWrite.OrderCode,
-                Product = orderToWrite.Product,
-                ProdDate = orderToWrite.ProdDate,
-                WarrantDate = orderToWrite.WarrantDate,
-                Status = orderToWrite.Status,
-            };
-
-			repo.InsertOrUpdate(
+            repo.InsertOrUpdate(
             order => order.Id == orderToWrite.Id,
-            newOrder
-            );
+			orderToWrite
+			);
 
             await _unitOfWork.SaveChangesAsync();
         }

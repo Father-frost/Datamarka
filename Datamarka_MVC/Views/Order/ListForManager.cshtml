@@ -5,10 +5,12 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th scope="col">Product</th>
-			<th scope="col">ProdDate</th>
-			<th scope="col">WarrantDate</th>
-			<th scope="col">Status</th>
+			<th scope="col">Наименование</th>
+			<th scope="col">GTIN</th>
+			<th scope="col">Партия</th>
+			<th scope="col">Дата изготовления</th>
+			<th scope="col">Дата годности</th>
+			<th scope="col">Статус</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,12 +18,14 @@
 		{
 			<tr>
 				<td>@order.Product.Name</td>
+				<td>@order.Product.GTIN</td>
+				<td>@order.Batch</td>
 				<td>@order.ProdDate</td>
 				<td>@order.WarrantDate</td>
 				<td>@order.Status</td>
 				<td>
-					<a href="@Url.Action(nameof(OrderController.Edit), new {id = order.Id})">Edit</a> |
-					<a href="@Url.Action(nameof(OrderController.Delete), new {id = order.Id})">Delete</a>
+					<a href="@Url.Action(nameof(OrderController.Edit), new {id = order.Id})">Изменить</a> |
+					<a href="@Url.Action(nameof(OrderController.Delete), new {id = order.Id})">Удалить</a>
 				</td>
 			</tr>
 		}
@@ -44,5 +48,5 @@
 }
 
 <div style="display:block">
-	<a href="@Url.Action(nameof(OrderController.Create))" class="btn btn-success m-2"> Add Order </a>
+	<a href="@Url.Action(nameof(OrderController.Create))" class="btn btn-success m-2"> Создать заявку </a>
 </div>
