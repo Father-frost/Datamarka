@@ -5,6 +5,7 @@ using Datamarka_DomainModel.Models.Identity;
 using Datamarka_MVC.RequestFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using SuperSimpleTcp;
 using System.Security.Claims;
 using System.Text;
@@ -25,6 +26,7 @@ namespace Datamarka_MVC.Controllers
 		Regex regex = null;
 		Match match = null;
 		string lastcode = "0000000";
+		string pattern = @"0104\d{12}21.{8,14}93.{4}";  //Шаблон для поиска кода маркировки
 
 		public OrderController(
 			IOrderService orderService,
@@ -187,6 +189,8 @@ namespace Datamarka_MVC.Controllers
 
 			try
 			{
+				regex = new Regex(pattern);
+				ConnectToServer();
 				//Validation on Editing
 				if (!ModelState.IsValid)
 				{
@@ -271,7 +275,7 @@ namespace Datamarka_MVC.Controllers
 				simpleClient?.Dispose();
 			}
 
-			simpleClient = new SimpleTcpClient("10.0.1.181", 23);
+			simpleClient = new SimpleTcpClient("10.0.1.214", 50010);
 
 
 
