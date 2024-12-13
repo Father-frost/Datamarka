@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datamarka_DomainModel", "Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datamarka_BLL", "Datamarka_BLL\Datamarka_BLL.csproj", "{1CA11EC0-6C32-4036-B522-862A5B98653E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datamarka_WebApi", "Datamarka_WebApi\Datamarka_WebApi.csproj", "{35199CD4-4E80-4F21-ABB2-D2E259D36865}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1CA11EC0-6C32-4036-B522-862A5B98653E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CA11EC0-6C32-4036-B522-862A5B98653E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CA11EC0-6C32-4036-B522-862A5B98653E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35199CD4-4E80-4F21-ABB2-D2E259D36865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35199CD4-4E80-4F21-ABB2-D2E259D36865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35199CD4-4E80-4F21-ABB2-D2E259D36865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35199CD4-4E80-4F21-ABB2-D2E259D36865}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
